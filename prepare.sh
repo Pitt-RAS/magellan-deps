@@ -20,6 +20,6 @@ mv librealsense-${LIBREALSENSE_VERSION} src/librealsense
 rm -rf librealsense-${LIBREALSENSE_VERSION} v${LIBREALSENSE_VERSION}.tar.gz
 
 # Submodules
-git submodule update --remote --recursive
+git submodule update --init --recursive
 
 popd > /dev/null
