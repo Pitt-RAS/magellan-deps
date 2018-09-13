@@ -13,10 +13,10 @@ mv realsense-${REALSENSE_NODE_VERSION}/realsense2_camera src
 rm -rf realsense-${REALSENSE_NODE_VERSION} ${REALSENSE_NODE_VERSION}.tar.gz
 
 # librealsense
-rm -rf src/librealsense
+rm -rf src/librealsense2
 wget https://github.com/IntelRealSense/librealsense/archive/v${LIBREALSENSE_VERSION}.tar.gz
 tar -xf v${LIBREALSENSE_VERSION}.tar.gz
-mv librealsense-${LIBREALSENSE_VERSION} src/librealsense
+mv librealsense-${LIBREALSENSE_VERSION} src/librealsense2
 rm -rf librealsense-${LIBREALSENSE_VERSION} v${LIBREALSENSE_VERSION}.tar.gz
 
 # Submodules
