@@ -2,4 +2,7 @@
 
 pushd $(dirname ${BASH_SOURCE}) > /dev/null
 catkin_make -DCATKIN_ENABLE_TESTING=False -DCMAKE_BUILD_TYPE=Release
+RET=$?
 popd > /dev/null
+
+exit $?
