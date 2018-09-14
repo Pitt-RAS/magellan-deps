@@ -2,7 +2,7 @@
 
 pushd $(dirname ${BASH_SOURCE}) > /dev/null
 
-REALSENSE_NODE_VERSION=2.0.3
+REALSENSE_NODE_VERSION=2.0.4
 
 # realsense2_camera
 rm -rf src/realsense2_camera
