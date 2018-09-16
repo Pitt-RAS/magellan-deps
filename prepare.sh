@@ -2,6 +2,8 @@
 
 pushd $(dirname ${BASH_SOURCE}) > /dev/null
 
+set -e
+
 REALSENSE_NODE_VERSION=2.0.4
 
 # realsense2_camera
