@@ -13,7 +13,11 @@ tar -xf ${REALSENSE_NODE_VERSION}.tar.gz
 mv realsense-${REALSENSE_NODE_VERSION}/realsense2_camera src
 rm -rf realsense-${REALSENSE_NODE_VERSION} ${REALSENSE_NODE_VERSION}.tar.gz
 
-# Submodules
-git submodule update --init --recursive
+# Skip submodule checkout in CI
+if [ -n "${IS_DOCKER_BUILD}" ]
+then
+    # Submodules
+    git submodule update --init --recursive
+fi
 
 popd > /dev/null
