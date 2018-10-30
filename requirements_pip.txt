@@ -3,3 +3,5 @@ tensorflow
 keras
 Pillow
 matplotlib
+flake8
+autopep8
