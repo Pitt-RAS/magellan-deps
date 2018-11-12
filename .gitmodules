@@ -7,3 +7,6 @@
 [submodule "src/depthimage_to_laserscan"]
 	path = src/depthimage_to_laserscan
 	url = https://github.com/ros-perception/depthimage_to_laserscan.git
+[submodule "src/hector_slam"]
+	path = src/hector_slam
+	url = https://github.com/tu-darmstadt-ros-pkg/hector_slam.git
