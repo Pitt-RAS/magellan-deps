@@ -33,12 +33,10 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import serial
-
+from time import sleep
 import rospy
 
 import libnmea_navsat_driver.driver
-
-import sys
 
 if __name__ == '__main__':
     rospy.init_node('nmea_serial_driver')
@@ -49,17 +47,25 @@ if __name__ == '__main__':
 
     try:
         GPS = serial.Serial(port=serial_port, baudrate=serial_baud, timeout=2)
+        GPS.write("$PMTK251,115200*1F\r\n")
+        sleep(1)
+        GPS.flush()
+        GPS.close()
+        sleep(1)
+        GPS = serial.Serial(port=serial_port, baudrate=115200, timeout=2)
+        sleep(1)
+        GPS.write("$PMTK220,100*2F\r\n")
+        sleep(1)
+        GPS.write("$PMTK314,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*2C\r\n")
+        sleep(1)
+        driver = libnmea_navsat_driver.driver.RosNMEADriver()
+        while not rospy.is_shutdown():
+            data = GPS.readline().strip()
+            try:
+                driver.add_sentence(data, frame_id)
+            except ValueError as e:
+                rospy.logwarn("Value error, likely due to missing fields in the NMEA message. Error was: %s. Please report this issue at github.com/ros-drivers/nmea_navsat_driver, including a bag file with the NMEA sentences that caused it." % e)
 
-        try:
-            driver = libnmea_navsat_driver.driver.RosNMEADriver()
-            while not rospy.is_shutdown():
-                data = GPS.readline().strip()
-                try:
-                    driver.add_sentence(data, frame_id)
-                except ValueError as e:
-                    rospy.logwarn("Value error, likely due to missing fields in the NMEA message. Error was: %s. Please report this issue at github.com/ros-drivers/nmea_navsat_driver, including a bag file with the NMEA sentences that caused it." % e)
+    except rospy.ROSInterruptException:
+        GPS.close() #Close GPS serial port
 
-        except (rospy.ROSInterruptException, serial.serialutil.SerialException):
-            GPS.close() #Close GPS serial port
-    except serial.SerialException as ex:
-        rospy.logfatal("Could not open serial port: I/O error({0}): {1}".format(ex.errno, ex.strerror))

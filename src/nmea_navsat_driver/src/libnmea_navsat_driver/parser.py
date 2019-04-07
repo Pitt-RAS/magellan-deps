@@ -95,9 +95,8 @@ def convert_knots_to_mps(knots):
 def convert_deg_to_rads(degs):
     return math.radians(safe_float(degs))
 
-
-"""Format for this dictionary is a sentence identifier (e.g. "GGA") as the key, with a
-list of tuples where each tuple is a field name, conversion function and index
+"""Format for this is a sentence identifier (e.g. "GGA") as the key, with a
+tuple of tuples where each tuple is a field name, conversion function and index
 into the split sentence"""
 parse_maps = {
     "GGA": [
@@ -111,7 +110,7 @@ parse_maps = {
         ("hdop", safe_float, 8),
         ("num_satellites", safe_int, 7),
         ("utc_time", convert_time, 1),
-    ],
+        ],
     "RMC": [
         ("utc_time", convert_time, 1),
         ("fix_valid", convert_status_flag, 2),
@@ -121,31 +120,13 @@ parse_maps = {
         ("longitude_direction", str, 6),
         ("speed", convert_knots_to_mps, 7),
         ("true_course", convert_deg_to_rads, 8),
-    ],
-    "GST": [
-        ("utc_time", convert_time, 1),
-        ("ranges_std_dev", safe_float, 2),
-        ("semi_major_ellipse_std_dev", safe_float, 3),
-        ("semi_minor_ellipse_std_dev", safe_float, 4),
-        ("semi_major_orientation", safe_float, 5),
-        ("lat_std_dev", safe_float, 6),
-        ("lon_std_dev", safe_float, 7),
-        ("alt_std_dev", safe_float, 8),
-    ],
-    "HDT": [
-        ("heading", safe_float, 1),
-    ],
-    "VTG": [
-        ("true_course", safe_float, 1),
-        ("speed", convert_knots_to_mps, 5)
-    ]
-}
+        ]
+    }
 
 
 def parse_nmea_sentence(nmea_sentence):
     # Check for a valid nmea sentence
-
-    if not re.match('(^\$GP|^\$GN|^\$GL|^\$IN).*\*[0-9A-Fa-f]{2}$', nmea_sentence):
+    if not re.match('(^\$GP|^\$GN|^\$GL).*\*[0-9A-Fa-f]{2}$', nmea_sentence):
         logger.debug("Regex didn't match, sentence not valid NMEA? Sentence was: %s"
                      % repr(nmea_sentence))
         return False
